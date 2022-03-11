@@ -175,6 +175,8 @@ while running == True:
                 elif event.key == K_m:
                     game_over = False
                     start_screen = True
+                    player_x = 0
+                    player_y = 0
 
         pygame.display.update()
         fps.tick(60)
