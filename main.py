@@ -33,6 +33,7 @@ Calibri60 = pygame.font.SysFont("Calibri", 60)
 Calibri120 = pygame.font.SysFont("Calibri", 120)
 Calibri40 = pygame.font.SysFont("Calibri", 40)
 ArcadeFont50 = pygame.font.Font("PublicPixel-0W6DP.ttf", 50)
+ArcadeFont30 = pygame.font.Font("PublicPixel-0W6DP.ttf", 30)
 cross = Calibri120.render("x", 1, white)
 circle = Calibri120.render("o", 1, white)
 pop_sfx = mixer.Sound("spacebar_soundfx.mp3")
@@ -42,6 +43,8 @@ welcome = ArcadeFont50.render("Use WASD---->", 1, white)
 dodge = ArcadeFont50.render("Jump Over The", 1, white)
 dodge1 = ArcadeFont50.render("Spikes", 1, white)
 goodluck = ArcadeFont50.render("Don't Look Down!", 1, white)
+enter = ArcadeFont30.render("'Enter' To Retry", 1, white)
+menu_label = ArcadeFont30.render("'M' For Menu", 1, white)
 
 gameover_label = ArcadeFont50.render("Game Over", 1, white)
 win_label = ArcadeFont50.render("You Win!", 1, white)
@@ -155,12 +158,23 @@ while running == True:
     elif game_over == True:
 
         window.fill(black)
-        window.blit(gameover_label, (180, 300))
+        window.blit(gameover_label, (180, 170))
+        window.blit(enter, (150, 320))
+        window.blit(menu_label, (180, 400))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == KEYUP:
+                if event.key == K_RETURN:
+                    game_over = False
+                    level_1 = True
+                    player_x = 0
+                    player_y = 0
+                elif event.key == K_m:
+                    game_over = False
+                    start_screen = True
 
         pygame.display.update()
         fps.tick(60)
