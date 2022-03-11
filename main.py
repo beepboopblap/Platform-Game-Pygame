@@ -38,10 +38,13 @@ circle = Calibri120.render("o", 1, white)
 pop_sfx = mixer.Sound("spacebar_soundfx.mp3")
 player = pygame.image.load("white_square.png").convert_alpha()
 spikes = pygame.image.load("spikes.png").convert_alpha()
-welcome = ArcadeFont50.render("Welcome!---->", 1, white)
+welcome = ArcadeFont50.render("Use WASD---->", 1, white)
 dodge = ArcadeFont50.render("Jump Over The", 1, white)
 dodge1 = ArcadeFont50.render("Spikes", 1, white)
+goodluck = ArcadeFont50.render("Don't Look Down!", 1, white)
+
 gameover_label = ArcadeFont50.render("Game Over", 1, white)
+win_label = ArcadeFont50.render("You Win!", 1, white)
 
 # transformations of sprites
 player = pygame.transform.scale(player, (50, 50))
@@ -67,11 +70,19 @@ platforms_level1 = [
     # middle platform
     pygame.Rect(350, 300, 300, 25)
 ]
-
 platforms_level2 = [
     # floor
     pygame.Rect(0, 450, 800, 25),
 ]
+platforms_level3 = [
+    # platform1
+    pygame.Rect(0, 270, 100, 25),
+    # platform2
+    pygame.Rect(300, 270, 70, 25),
+    # platforms3
+    pygame.Rect(600, 270, 70, 25),
+]
+
 
 running = True
 start_screen = True
@@ -86,6 +97,7 @@ level_2 = False
 level_3 = False
 level_4 = False
 level_5 = False
+win = False
 
 
 while running == True:
@@ -153,6 +165,19 @@ while running == True:
         pygame.display.update()
         fps.tick(60)
 
+    elif win == True:
+
+        window.fill(black)
+        window.blit(win_label, (180, 200))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()
+        fps.tick(60)
+
     elif level_1 == True:
 
         # graphics
@@ -187,9 +212,10 @@ while running == True:
             player_speed = 0
             platform_collision = True
             jump = True
+
         # the middle platform
-        elif player_y >= 250 and player_x >= 300 and player_x <= 640:
-            player_y = 250
+        elif player_y >= 254 and player_x >= 300 and player_x <= 640:
+            player_y = 254
             player_speed = 0
             platform_collision = True
             jump = True
@@ -240,6 +266,13 @@ while running == True:
             player_speed = 0
             platform_collision = True
             jump = True
+        if player_x <= -10:
+            player_x = -10
+        if player_x >= 755:
+            level_2 = False
+            level_3 = True
+            player_y = 200
+            player_x = 20
 
         # user input
         keys = pygame.key.get_pressed()
@@ -260,6 +293,100 @@ while running == True:
         if player_y >= 380 and player_x >= 375 and player_x <= 527:
             player_speed = 0
             level_2 = False
+            game_over = True
+
+        pygame.display.update()
+        fps.tick(60)
+
+    elif level_3 == True:
+
+        window.fill(black)
+        window.blit(player, (player_x, player_y))
+        window.blit(goodluck, (10, 80))
+        window.blit(spikes, (400, 550))
+        window.blit(spikes, (430, 550))
+        window.blit(spikes, (460, 550))
+        window.blit(spikes, (490, 550))
+        window.blit(spikes, (280, 550))
+        window.blit(spikes, (310, 550))
+        window.blit(spikes, (340, 550))
+        window.blit(spikes, (370, 550))
+        window.blit(spikes, (250, 550))
+        window.blit(spikes, (220, 550))
+        window.blit(spikes, (190, 550))
+        window.blit(spikes, (160, 550))
+        window.blit(spikes, (130, 550))
+        window.blit(spikes, (100, 550))
+        window.blit(spikes, (70, 550))
+        window.blit(spikes, (40, 550))
+        window.blit(spikes, (10, 550))
+        window.blit(spikes, (-20, 550))
+        window.blit(spikes, (520, 550))
+        window.blit(spikes, (550, 550))
+        window.blit(spikes, (580, 550))
+        window.blit(spikes, (610, 550))
+        window.blit(spikes, (640, 550))
+        window.blit(spikes, (670, 550))
+        window.blit(spikes, (700, 550))
+        window.blit(spikes, (730, 550))
+        window.blit(spikes, (760, 550))
+        window.blit(spikes, (790, 550))
+        window.blit(spikes, (820, 550))
+
+        # blit platforms
+        for p in platforms_level3:
+            pygame.draw.rect(window, white, p)
+
+        # event checker thing
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+        keys = pygame.key.get_pressed()
+        if keys[ord("a")]:
+            player_x -= 4
+        elif keys[ord("d")]:
+            player_x += 4
+
+        elif jump == True:
+            if keys[ord("w")]:
+                player_speed = - 12
+                jump = False
+
+        player_speed += player_acceleration
+        player_y += player_speed
+
+        # borders
+
+        # first platform
+        if player_y >= 226 and player_x >= -20 and player_x <= 74:
+            player_y = 226
+            player_speed = 0
+            platform_collision = True
+            jump = True
+
+        # second platform
+        if player_y >= 226 and player_x >= 263 and player_x <= 370:
+            player_y = 226
+            player_speed = 0
+            platform_collision = True
+            jump = True
+
+        # third platform
+        if player_y >= 226 and player_x >= 563 and player_x <= 670:
+            player_y = 226
+            player_speed = 0
+            platform_collision = True
+            jump = True
+
+        if player_x <= -10:
+            player_x = -10
+        if player_x >= 755:
+            level_3 = False
+            win = True
+        if player_y >= 538:
+            level_3 = False
             game_over = True
 
         pygame.display.update()
