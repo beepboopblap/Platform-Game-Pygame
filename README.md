@@ -10,7 +10,10 @@ Playlist: https://youtube.com/playlist?list=PLM-syYolLbsz5paY9gafMzMpWgv-h4ac6
 
 Channel: https://www.youtube.com/user/pbaumgarten
 
+
 **UPDATES**
+
+March 11 3:54pm (GMT + 8) - Patched a bug from the third level
 
 March 11 3:51pm (GMT + 8) - Added another level with and added a win screen
 
