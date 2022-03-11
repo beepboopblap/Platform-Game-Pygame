@@ -360,7 +360,7 @@ while running == True:
         # borders
 
         # first platform
-        if player_y >= 226 and player_x >= -20 and player_x <= 74:
+        if player_y >= 226 and player_x >= -20 and player_x <= 81:
             player_y = 226
             player_speed = 0
             platform_collision = True
