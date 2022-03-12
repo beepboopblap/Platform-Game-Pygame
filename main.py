@@ -181,7 +181,7 @@ while running == True:
                 elif event.key == K_RETURN:
                     if point == 0:
                         pop_sfx.play()
-                        level_4 = True
+                        level_1 = True
                         start_screen = False
                     elif point == 1:
                         pygame.quit()
