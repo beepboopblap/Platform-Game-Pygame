@@ -13,6 +13,8 @@ Channel: https://www.youtube.com/user/pbaumgarten
 
 **UPDATES**
 
+March 12 8:31am (GMT + 8) - Made it so that players could diagonally jump (press two movement keys at the same time)
+
 March 11 4:33pm (GMT + 8) - Added a retry option if you lose
 
 March 11 3:54pm (GMT + 8) - Patched a bug from the third level
