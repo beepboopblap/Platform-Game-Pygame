@@ -1,4 +1,3 @@
-import py
 import pygame
 from pygame.locals import *
 from pygame import mixer
@@ -39,31 +38,22 @@ circle = Calibri120.render("o", 1, white)
 pop_sfx = mixer.Sound("spacebar_soundfx.mp3")
 player = pygame.image.load("white_square.png").convert_alpha()
 spikes = pygame.image.load("spikes.png").convert_alpha()
-welcome = ArcadeFont50.render("Use WASD---->", 1, white)
+welcome = ArcadeFont50.render("Use WASD---->", 1, yellow)
 dodge = ArcadeFont50.render("Jump Over The", 1, white)
-dodge1 = ArcadeFont50.render("Spikes", 1, white)
-goodluck = ArcadeFont50.render("Don't Look Down!", 1, white)
+dodge1 = ArcadeFont50.render("Spikes", 1, red)
+goodluck = ArcadeFont50.render("Don't Look Down!", 1, red)
 enter = ArcadeFont30.render("'Enter' To Retry", 1, white)
 menu_label = ArcadeFont30.render("'M' For Menu", 1, white)
+madeby = ArcadeFont30.render("Made by", 1, white)
+me = ArcadeFont50.render("beepboopblap", 1, yellow)
+esc_label = ArcadeFont30.render("press 'esc' to escape", 1, white)
 
-gameover_label = ArcadeFont50.render("Game Over", 1, white)
-win_label = ArcadeFont50.render("You Win!", 1, white)
+gameover_label = ArcadeFont50.render("Game Over", 1, red)
+win_label = ArcadeFont50.render("You Win!", 1, yellow)
 
 # transformations of sprites
 player = pygame.transform.scale(player, (50, 50))
 spikes = pygame.transform.scale(spikes, (60, 60))
-
-# functions
-
-
-def isCollision(killer_x, killer_y, player_x, player_y):
-    distance = math.sqrt(
-        (math.pow(player_x - killer_x, 2)) + (math.pow(player_y - killer_y, 2))
-    )
-    if distance < 114:
-        game_over = True
-    else:
-        pass
 
 
 # all platforms
@@ -89,6 +79,7 @@ platforms_level3 = [
 
 running = True
 start_screen = True
+credits_screen = False
 point = 0
 pressed = False
 jump = False
@@ -110,26 +101,41 @@ while running == True:
     if start_screen == True:
         # graphics
         window.fill(black)
-        tic_tac_toe_label = ArcadeFont50.render("Main Menu", 1, white)
+        tic_tac_toe_label = ArcadeFont50.render("Main Menu", 1, yellow)
         window.blit(tic_tac_toe_label, (175, 80))
 
         if point == 0:
 
             start_label = ArcadeFont50.render("Start", 1, white)
             exit_label = ArcadeFont50.render("Exit", 1, white)
+            credits = ArcadeFont50.render("Credits", 1, white)
             choose_sign = ArcadeFont50.render("*", 1, white)
-            window.blit(start_label, (300, 240))
-            window.blit(exit_label, (300, 320))
-            window.blit(choose_sign, (240, 250))
+            window.blit(start_label, (290, 240))
+            window.blit(exit_label, (290, 320))
+            window.blit(credits, (290, 400))
+            window.blit(choose_sign, (230, 250))
 
         elif point == 1:
 
             start_label = ArcadeFont50.render("Start", 1, white)
             exit_label = ArcadeFont50.render("Exit", 1, white)
+            credits = ArcadeFont50.render("Credits", 1, white)
             choose_sign = ArcadeFont50.render("*", 1, white)
-            window.blit(start_label, (300, 240))
-            window.blit(exit_label, (300, 320))
-            window.blit(choose_sign, (240, 330))
+            window.blit(start_label, (290, 240))
+            window.blit(exit_label, (290, 320))
+            window.blit(credits, (290, 400))
+            window.blit(choose_sign, (230, 330))
+
+        elif point == 2:
+
+            start_label = ArcadeFont50.render("Start", 1, white)
+            exit_label = ArcadeFont50.render("Exit", 1, white)
+            credits = ArcadeFont50.render("Credits", 1, white)
+            choose_sign = ArcadeFont50.render("*", 1, white)
+            window.blit(start_label, (290, 240))
+            window.blit(exit_label, (290, 320))
+            window.blit(credits, (290, 400))
+            window.blit(choose_sign, (230, 410))
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -151,9 +157,31 @@ while running == True:
                     elif point == 1:
                         pygame.quit()
                         sys.exit()
+                    elif point == 2:
+                        credits_screen = True
+                        start_screen = False
 
-        point = point % 2
+        point = point % 3
         pygame.display.update()
+
+    elif credits_screen == True:
+
+        window.fill(black)
+        window.blit(madeby, (175, 80))
+        window.blit(me, (100, 280))
+        window.blit(esc_label, (80, 500))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYUP:
+                if event.key == K_ESCAPE:
+                    credits_screen = False
+                    start_screen = True
+
+        pygame.display.update()
+        fps.tick(60)
 
     elif game_over == True:
 
@@ -255,6 +283,11 @@ while running == True:
                     player_speed = - 12
                     jump = False
 
+        elif keys[ord("w")]:
+            if jump == True:
+                player_speed = - 12
+                jump = False
+
         player_speed += player_acceleration
         player_y += player_speed
 
@@ -314,6 +347,11 @@ while running == True:
                 if jump == True:
                     player_speed = - 12
                     jump = False
+
+        elif keys[ord("w")]:
+            if jump == True:
+                player_speed = - 12
+                jump = False
 
         player_speed += player_acceleration
         player_y += player_speed
@@ -388,6 +426,11 @@ while running == True:
                 if jump == True:
                     player_speed = - 12
                     jump = False
+        
+        elif keys[ord("w")]:
+            if jump == True:
+                player_speed = - 12
+                jump = False
 
         player_speed += player_acceleration
         player_y += player_speed
