@@ -13,6 +13,8 @@ Channel: https://www.youtube.com/user/pbaumgarten
 
 **UPDATES**
 
+March 12 5:38pm (GMT + 8) - Added a new level 
+
 March 12 8:55am (GMT + 8) - Added colors 
 
 March 12 8:31am (GMT + 8) - Made it so that players could diagonally jump (press two movement keys at the same time)
