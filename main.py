@@ -1,3 +1,4 @@
+import py
 import pygame
 from pygame.locals import *
 from pygame import mixer
@@ -300,13 +301,19 @@ while running == True:
         keys = pygame.key.get_pressed()
         if keys[ord("a")]:
             player_x -= 4
+
+            if keys[ord("w")]:
+                if jump == True:
+                    player_speed = - 12
+                    jump = False
+
         elif keys[ord("d")]:
             player_x += 4
 
-        elif jump == True:
             if keys[ord("w")]:
-                player_speed = - 12
-                jump = False
+                if jump == True:
+                    player_speed = - 12
+                    jump = False
 
         player_speed += player_acceleration
         player_y += player_speed
@@ -368,13 +375,19 @@ while running == True:
         keys = pygame.key.get_pressed()
         if keys[ord("a")]:
             player_x -= 4
+
+            if keys[ord("w")]:
+                if jump == True:
+                    player_speed = - 12
+                    jump = False
+
         elif keys[ord("d")]:
             player_x += 4
 
-        elif jump == True:
             if keys[ord("w")]:
-                player_speed = - 12
-                jump = False
+                if jump == True:
+                    player_speed = - 12
+                    jump = False
 
         player_speed += player_acceleration
         player_y += player_speed
