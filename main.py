@@ -1,8 +1,9 @@
 import pygame
 from pygame.locals import *
 from pygame import mixer
-import math
 import sys
+import math
+import random
 
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 800
@@ -11,7 +12,7 @@ pygame.init()
 pygame.font.init()
 fps = pygame.time.Clock()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Cool Platformer")
+pygame.display.set_caption("beepboopblap's platform game")
 
 
 x = 800
@@ -20,6 +21,12 @@ player_x = 0
 player_y = 0
 player_speed = 0
 player_acceleration = 0.4
+enemy_x = 300
+enemy_y = 0
+enemy_x1 = 500
+enemy_y1 = 0
+enemy_x2 = 700
+enemy_y2 = 0
 blue = (0, 0, 255)
 green = (0, 255, 0)
 red = (255, 0, 0)
@@ -38,15 +45,18 @@ circle = Calibri120.render("o", 1, white)
 pop_sfx = mixer.Sound("spacebar_soundfx.mp3")
 player = pygame.image.load("white_square.png").convert_alpha()
 spikes = pygame.image.load("spikes.png").convert_alpha()
+pipe = pygame.image.load("pipe.png").convert_alpha()
+flipped_spike = pygame.image.load("flipped_spike.png").convert_alpha()
 welcome = ArcadeFont50.render("Use WASD---->", 1, yellow)
 dodge = ArcadeFont50.render("Jump Over The", 1, white)
 dodge1 = ArcadeFont50.render("Spikes", 1, red)
 goodluck = ArcadeFont50.render("Don't Look Down!", 1, red)
+careful_label = ArcadeFont50.render("Be Careful", 1, white)
 enter = ArcadeFont30.render("'Enter' To Retry", 1, white)
 menu_label = ArcadeFont30.render("'M' For Menu", 1, white)
 madeby = ArcadeFont30.render("Made by", 1, white)
 me = ArcadeFont50.render("beepboopblap", 1, yellow)
-esc_label = ArcadeFont30.render("press 'esc' to escape", 1, white)
+esc_label = ArcadeFont30.render("Press 'esc' to Escape", 1, white)
 
 gameover_label = ArcadeFont50.render("Game Over", 1, red)
 win_label = ArcadeFont50.render("You Win!", 1, yellow)
@@ -54,6 +64,8 @@ win_label = ArcadeFont50.render("You Win!", 1, yellow)
 # transformations of sprites
 player = pygame.transform.scale(player, (50, 50))
 spikes = pygame.transform.scale(spikes, (60, 60))
+pipe = pygame.transform.scale(pipe, (100, 100))
+flipped_spike = pygame.transform.scale(flipped_spike, (60, 60))
 
 
 # all platforms
@@ -75,6 +87,23 @@ platforms_level3 = [
     # platforms3
     pygame.Rect(600, 270, 70, 25),
 ]
+platforms_level4 = [
+    # floor
+    pygame.Rect(0, 450, 800, 25),
+
+]
+
+# functions
+
+
+def isCollision(enemy_x, enemy_y, player_x, player_y):
+    distance = math.sqrt(
+        (math.pow(player_x - enemy_x, 2)) + (math.pow(player_y - enemy_y, 2))
+    )
+    if distance < 50:
+        return True
+    else:
+        return False
 
 
 running = True
@@ -152,7 +181,7 @@ while running == True:
                 elif event.key == K_RETURN:
                     if point == 0:
                         pop_sfx.play()
-                        level_1 = True
+                        level_4 = True
                         start_screen = False
                     elif point == 1:
                         pygame.quit()
@@ -213,12 +242,17 @@ while running == True:
     elif win == True:
 
         window.fill(black)
-        window.blit(win_label, (180, 200))
+        window.blit(win_label, (185, 200))
+        window.blit(menu_label, (200, 400))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == KEYUP:
+                if event.key == K_m:
+                    win = False
+                    start_screen = True
 
         pygame.display.update()
         fps.tick(60)
@@ -426,7 +460,7 @@ while running == True:
                 if jump == True:
                     player_speed = - 12
                     jump = False
-        
+
         elif keys[ord("w")]:
             if jump == True:
                 player_speed = - 12
@@ -434,8 +468,6 @@ while running == True:
 
         player_speed += player_acceleration
         player_y += player_speed
-
-        # borders
 
         # first platform
         if player_y >= 226 and player_x >= -20 and player_x <= 81:
@@ -458,18 +490,131 @@ while running == True:
             platform_collision = True
             jump = True
 
+        # borders
+
         if player_x <= -10:
             player_x = -10
         if player_x >= 755:
             level_3 = False
-            win = True
-        if player_y >= 538:
-            level_3 = False
-            game_over = True
+            level_4 = True
+            player_x = 0
+            player_y = 250
 
         pygame.display.update()
         fps.tick(60)
 
+    elif level_4 == True:
+
+        window.fill(black)
+        window.blit(careful_label, (50, 100))
+        window.blit(player, (player_x, player_y))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+        # input
+        keys = pygame.key.get_pressed()
+        if keys[ord("a")]:
+            player_x -= 4
+
+            if keys[ord("w")]:
+                if jump == True:
+                    player_speed = - 12
+                    jump = False
+
+        elif keys[ord("d")]:
+            player_x += 4
+
+            if keys[ord("w")]:
+                if jump == True:
+                    player_speed = - 12
+                    jump = False
+
+        elif keys[ord("w")]:
+            if jump == True:
+                player_speed = - 12
+                jump = False
+
+        player_speed += player_acceleration
+        player_y += player_speed
+
+        # blit all platforms
+        for p in platforms_level4:
+            pygame.draw.rect(window, white, p)
+
+        # borders
+        if player_y >= 405:
+            player_y = 405
+            player_speed = 0
+            platform_collision = True
+            jump = True
+
+        # enemy and enemy collision
+
+        if enemy_y < y:
+
+            window.blit(flipped_spike, (enemy_x, enemy_y))
+            enemy_y = enemy_y + 7
+            if enemy_y > 400:
+                enemy_x = random.randrange(200, 700)
+                enemy_y = 0
+
+            # Collision
+            collision = isCollision(enemy_x, enemy_y, player_x, player_y)
+
+            if collision:
+                enemy_y = 0
+                enemy_x = random.randrange(0, x)
+                game_over = True
+                level_4 = False
+
+        if enemy_y1 < y:
+
+            window.blit(flipped_spike, (enemy_x1, enemy_y1))
+            enemy_y1 = enemy_y1 + 5
+            if enemy_y1 > 400:
+                enemy_x1 = random.randrange(200, 700)
+                enemy_y1 = 0
+
+            # Collision
+            collision = isCollision(enemy_x1, enemy_y1, player_x, player_y)
+
+            if collision:
+                enemy_y1 = 0
+                enemy_x1 = random.randrange(0, x)
+                game_over = True
+                level_4 = False
+
+        if enemy_y2 < y:
+
+            window.blit(flipped_spike, (enemy_x2, enemy_y2))
+            enemy_y2 = enemy_y2 + 3
+            if enemy_y2 > 400:
+                enemy_x2 = random.randrange(200, 700)
+                enemy_y2 = 0
+
+            # Collision
+            collision = isCollision(enemy_x2, enemy_y2, player_x, player_y)
+
+            if collision:
+                enemy_y2 = 0
+                enemy_x2 = random.randrange(0, x)
+                game_over = True
+                level_4 = False
+
+        # borders
+        if player_x <= -10:
+            player_x = -10
+        if player_x >= 755:
+            win = True
+            level_4 = False
+            player_x = 0
+            player_y = 250
+
+        pygame.display.update()
+        fps.tick(60)
 
 # loop over, game over
 pygame.quit()
