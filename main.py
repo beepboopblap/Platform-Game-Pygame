@@ -4,12 +4,14 @@ from pygame import mixer
 import sys
 import math
 import random
+import time
 
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 800
 
 pygame.init()
 pygame.font.init()
+pygame.mixer.init()
 fps = pygame.time.Clock()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("beepboopblap's platform game")
@@ -43,6 +45,8 @@ ArcadeFont30 = pygame.font.Font("PublicPixel-0W6DP.ttf", 30)
 cross = Calibri120.render("x", 1, white)
 circle = Calibri120.render("o", 1, white)
 pop_sfx = mixer.Sound("spacebar_soundfx.mp3")
+game_over_sfx = mixer.Sound("game_over.mp3")
+background_music = mixer.music.load("background_music.mp3")
 player = pygame.image.load("white_square.png").convert_alpha()
 spikes = pygame.image.load("spikes.png").convert_alpha()
 pipe = pygame.image.load("pipe.png").convert_alpha()
@@ -122,6 +126,9 @@ level_4 = False
 level_5 = False
 win = False
 
+
+# background_music 
+mixer.music.play(-1)
 
 while running == True:
 
@@ -234,7 +241,6 @@ while running == True:
                     start_screen = True
                     player_x = 0
                     player_y = 0
-                    player_y = 0
 
         pygame.display.update()
         fps.tick(60)
@@ -242,8 +248,9 @@ while running == True:
     elif win == True:
 
         window.fill(black)
-        window.blit(win_label, (185, 200))
+        window.blit(win_label, (200, 180))
         window.blit(menu_label, (200, 400))
+        window.blit(elapsed_label, (150, 300))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -258,6 +265,8 @@ while running == True:
         fps.tick(60)
 
     elif level_1 == True:
+
+        start_time = time.time()
 
         # graphics
         window.fill(black)
@@ -392,6 +401,7 @@ while running == True:
 
         # collisions
         if player_y >= 380 and player_x >= 375 and player_x <= 527:
+            game_over_sfx.play()
             player_speed = 0
             level_2 = False
             game_over = True
@@ -499,6 +509,10 @@ while running == True:
             level_4 = True
             player_x = 0
             player_y = 250
+        if player_y >= 550:
+            game_over_sfx.play()
+            game_over = True
+            level_3 = False
 
         pygame.display.update()
         fps.tick(60)
@@ -569,6 +583,7 @@ while running == True:
                 enemy_x = random.randrange(0, x)
                 game_over = True
                 level_4 = False
+                game_over_sfx.play()
 
         if enemy_y1 < y:
 
@@ -586,6 +601,7 @@ while running == True:
                 enemy_x1 = random.randrange(0, x)
                 game_over = True
                 level_4 = False
+                game_over_sfx.play()
 
         if enemy_y2 < y:
 
@@ -603,11 +619,17 @@ while running == True:
                 enemy_x2 = random.randrange(0, x)
                 game_over = True
                 level_4 = False
+                game_over_sfx.play()
 
         # borders
         if player_x <= -10:
             player_x = -10
         if player_x >= 755:
+            end_time = time.time()
+            time_lapsed = end_time - start_time
+            time_lapsed = int(time_lapsed)
+            elapsed_label = ArcadeFont30.render(
+                "Elapsed: " + str(time_lapsed) + " seconds", 1, white)
             win = True
             level_4 = False
             player_x = 0
