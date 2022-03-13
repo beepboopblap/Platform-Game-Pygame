@@ -13,6 +13,8 @@ Channel: https://www.youtube.com/user/pbaumgarten
 
 **UPDATES**
 
+March 13 9:44am (GMT + 8) - Added a stopwatch, background music and a game over sound effect
+
 March 12 5:38pm (GMT + 8) - Added a new level 
 
 March 12 8:55am (GMT + 8) - Added colors 
