@@ -13,6 +13,8 @@ Channel: https://www.youtube.com/user/pbaumgarten
 
 **UPDATES**
 
+March 14 11:09am (GMT + 8) - You may now choose a different color for your player sprite!
+
 March 13 9:44am (GMT + 8) - Added a stopwatch, background music and a game over sound effect
 
 March 12 5:38pm (GMT + 8) - Added a new level 
