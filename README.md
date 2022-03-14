@@ -10,8 +10,7 @@ Playlist: https://youtube.com/playlist?list=PLM-syYolLbsz5paY9gafMzMpWgv-h4ac6
 
 Channel: https://www.youtube.com/user/pbaumgarten
 
-
-**UPDATES**
+# Updates
 
 March 14 11:09am (GMT + 8) - You may now choose a different color for your player sprite!
 
