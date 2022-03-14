@@ -33,6 +33,6 @@ March 11 4:33pm (GMT + 8) - Added a retry option if you lose
 
 March 11 3:54pm (GMT + 8) - Patched a bug from the third level
 
-March 11 3:51pm (GMT + 8) - Added another level with and added a win screen
+March 11 3:51pm (GMT + 8) - Added another level and added a win screen
 
 March 11 2:11pm (GMT + 8) - Uploaded to github with 2 easy levels
