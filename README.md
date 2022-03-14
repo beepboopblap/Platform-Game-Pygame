@@ -4,9 +4,10 @@
 
 A Platform game made by beepboopblap
 
-# Preview Of The Game
+# Previews
 
 ![A picture of the skin selection screen](prev.png)
+![Picture of the gameplay](prev1.png)
 
 
 # Contributions
