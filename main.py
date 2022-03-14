@@ -6,6 +6,7 @@ import math
 import random
 import time
 
+
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 800
 
@@ -47,7 +48,16 @@ circle = Calibri120.render("o", 1, white)
 pop_sfx = mixer.Sound("spacebar_soundfx.mp3")
 game_over_sfx = mixer.Sound("game_over.mp3")
 background_music = mixer.music.load("background_music.mp3")
-player = pygame.image.load("white_square.png").convert_alpha()
+player_white = pygame.image.load("white_square.png").convert_alpha()
+player_yellow = pygame.image.load("yellow_square.png").convert_alpha()
+player_green = pygame.image.load("green_square.png").convert_alpha()
+player_orange = pygame.image.load("orange_square.png").convert_alpha()
+player_blue = pygame.image.load("blue_square.png").convert_alpha()
+player_whiteprev = pygame.image.load("white_square.png").convert_alpha()
+player_yellowprev = pygame.image.load("yellow_square.png").convert_alpha()
+player_greenprev = pygame.image.load("green_square.png").convert_alpha()
+player_orangeprev = pygame.image.load("orange_square.png").convert_alpha()
+player_blueprev = pygame.image.load("blue_square.png").convert_alpha()
 spikes = pygame.image.load("spikes.png").convert_alpha()
 pipe = pygame.image.load("pipe.png").convert_alpha()
 flipped_spike = pygame.image.load("flipped_spike.png").convert_alpha()
@@ -61,12 +71,23 @@ menu_label = ArcadeFont30.render("'M' For Menu", 1, white)
 madeby = ArcadeFont30.render("Made by", 1, white)
 me = ArcadeFont50.render("beepboopblap", 1, yellow)
 esc_label = ArcadeFont30.render("Press 'esc' to Escape", 1, white)
+choose_label = ArcadeFont50.render("Choose a Skin", 1, yellow)
+
 
 gameover_label = ArcadeFont50.render("Game Over", 1, red)
 win_label = ArcadeFont50.render("You Win!", 1, yellow)
 
 # transformations of sprites
-player = pygame.transform.scale(player, (50, 50))
+player_white = pygame.transform.scale(player_white, (50, 50))
+player_yellow = pygame.transform.scale(player_yellow, (50, 50))
+player_green = pygame.transform.scale(player_green, (50, 50))
+player_blue = pygame.transform.scale(player_blue, (50, 50))
+player_orange = pygame.transform.scale(player_orange, (50, 50))
+player_whiteprev = pygame.transform.scale(player_white, (300, 300))
+player_yellowprev = pygame.transform.scale(player_yellow, (300, 300))
+player_greenprev = pygame.transform.scale(player_green, (300, 300))
+player_blueprev = pygame.transform.scale(player_blue, (300, 300))
+player_orangeprev = pygame.transform.scale(player_orange, (300, 300))
 spikes = pygame.transform.scale(spikes, (60, 60))
 pipe = pygame.transform.scale(pipe, (100, 100))
 flipped_spike = pygame.transform.scale(flipped_spike, (60, 60))
@@ -84,9 +105,9 @@ platforms_level2 = [
     pygame.Rect(0, 450, 800, 25),
 ]
 platforms_level3 = [
-    # platform1
-    pygame.Rect(0, 270, 100, 25),
-    # platform2
+    # platform1#
+    pygame.Rect(25, 270, 70, 25),
+    #  platform2
     pygame.Rect(300, 270, 70, 25),
     # platforms3
     pygame.Rect(600, 270, 70, 25),
@@ -114,9 +135,11 @@ running = True
 start_screen = True
 credits_screen = False
 point = 0
+point1 = 0
 pressed = False
 jump = False
 game_over = False
+skin_chooser = False
 
 # all levels
 level_1 = False
@@ -126,9 +149,7 @@ level_4 = False
 level_5 = False
 win = False
 
-
-# background_music 
-mixer.music.play(-1)
+# background_music
 
 while running == True:
 
@@ -137,8 +158,8 @@ while running == True:
     if start_screen == True:
         # graphics
         window.fill(black)
-        tic_tac_toe_label = ArcadeFont50.render("Main Menu", 1, yellow)
-        window.blit(tic_tac_toe_label, (175, 80))
+        main_menu = ArcadeFont50.render("Main Menu", 1, yellow)
+        window.blit(main_menu, (175, 80))
 
         if point == 0:
 
@@ -188,17 +209,80 @@ while running == True:
                 elif event.key == K_RETURN:
                     if point == 0:
                         pop_sfx.play()
-                        level_1 = True
+                        skin_chooser = True
                         start_screen = False
                     elif point == 1:
                         pygame.quit()
-                        sys.exit()
-                    elif point == 2:
-                        credits_screen = True
+
                         start_screen = False
 
         point = point % 3
         pygame.display.update()
+
+    elif skin_chooser == True:
+
+        white_square = ArcadeFont30.render("White", 1, white)
+        yellow_square = ArcadeFont30.render("Yellow", 1, white)
+        green_square = ArcadeFont30.render("Green", 1, white)
+        blue_square = ArcadeFont30.render("Blue", 1, white)
+        orange_square = ArcadeFont30.render("Orange", 1, white)
+        choose_sign = ArcadeFont50.render("*", 1, white)
+
+        window.fill(black)
+        window.blit(choose_label, (97, 80))
+        window.blit(white_square, (97, 200))
+        window.blit(yellow_square, (97, 270))
+        window.blit(green_square, (97, 340))
+        window.blit(blue_square, (97, 410))
+        window.blit(orange_square, (97, 480))
+
+        if point == 0:
+            window.blit(choose_sign, (40, 200))
+            window.blit(player_whiteprev, (420, 200))
+
+        elif point == 1:
+            window.blit(choose_sign, (40, 270))
+            window.blit(player_yellowprev, (420, 200))
+
+        elif point == 2:
+            window.blit(choose_sign, (40, 340))
+            window.blit(player_greenprev, (420, 200))
+
+        elif point == 3:
+            window.blit(choose_sign, (40, 410))
+            window.blit(player_blueprev, (420, 200))
+
+        elif point == 4:
+            window.blit(choose_sign, (40, 480))
+            window.blit(player_orangeprev, (420, 200))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYUP:
+                if event.key == K_UP:
+                    point -= 1
+                elif event.key == K_DOWN:
+                    point += 1
+                    pop_sfx.play()
+                elif event.key == K_RETURN:
+                    skin_chooser = False
+                    level_1 = True
+                    if point == 0:
+                        player_sprite = player_white
+                    elif point == 1:
+                        player_sprite = player_yellow
+                    elif point == 2:
+                        player_sprite = player_green
+                    elif point == 3:
+                        player_sprite = player_blue
+                    elif point == 4:
+                        player_sprite = player_orange
+
+        point = point % 5
+        pygame.display.update()
+        fps.tick(60)
 
     elif credits_screen == True:
 
@@ -270,7 +354,7 @@ while running == True:
 
         # graphics
         window.fill(black)
-        window.blit(player, (player_x, player_y))
+        window.blit(player_sprite, (player_x, player_y))
         window.blit(welcome, (50, 100))
 
         # blit all platforms
@@ -341,7 +425,7 @@ while running == True:
 
         # graphics
         window.fill(black)
-        window.blit(player, (player_x, player_y))
+        window.blit(player_sprite, (player_x, player_y))
         window.blit(dodge, (50, 100))
         window.blit(dodge1, (70, 200))
         window.blit(spikes, (400, 410))
@@ -412,7 +496,7 @@ while running == True:
     elif level_3 == True:
 
         window.fill(black)
-        window.blit(player, (player_x, player_y))
+        window.blit(player_sprite, (player_x, player_y))
         window.blit(goodluck, (10, 80))
         window.blit(spikes, (400, 550))
         window.blit(spikes, (430, 550))
@@ -521,7 +605,7 @@ while running == True:
 
         window.fill(black)
         window.blit(careful_label, (50, 100))
-        window.blit(player, (player_x, player_y))
+        window.blit(player_sprite, (player_x, player_y))
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -627,7 +711,8 @@ while running == True:
         if player_x >= 755:
             end_time = time.time()
             time_lapsed = end_time - start_time
-            time_lapsed = int(time_lapsed)
+            time_lapsed = float(time_lapsed + 3)
+            time_lapsed = round(time_lapsed)
             elapsed_label = ArcadeFont30.render(
                 "Elapsed: " + str(time_lapsed) + " seconds", 1, white)
             win = True
