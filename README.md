@@ -6,7 +6,8 @@ A Platform game made by beepboopblap
 
 # Preview Of The Game
 
-(./prev.png)
+![A picture of the skin selection screen](prev.png)
+
 
 # Contributions
 
