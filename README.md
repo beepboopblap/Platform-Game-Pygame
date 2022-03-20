@@ -11,7 +11,7 @@ A Platform game made by beepboopblap
 
 # Contributions
 
-Created with a little help of Mr Baumgarten's Youtube playlist on programming with pygame.
+Created with a little help of Mr Baumgarten's YouTube playlist on programming with pygame.
 
 Playlist: https://youtube.com/playlist?list=PLM-syYolLbsz5paY9gafMzMpWgv-h4ac6
 
